@@ -145,10 +145,5 @@ Note: If you "do not" have a service account for the Jenkins container, then ref
 
 - Add a Jenkinsfile to the repo you selected to manage using Jenkins.
 
-<<<<<<< HEAD
--- Set the credntialsId to whatever you named it in AWS IAM.
--- Set under "git branch" the URL to the GitHub repository you have the pipeline set to.
-
-=======
->>>>>>> origin/main
-
+(7) Return to the Jenkins dashboard and select the pipeline you want to run.
+- Select "Build Now" on teh left side.

@@ -1,7 +1,57 @@
 provider "aws" {
-  region = "us-east-1"
+  region = var.aws_region
 
 }
+
+#----------------------------------------------------------------#
+#
+# Variables
+
+# Variable aws_region is used to provide a default
+# AWS region. You can modify this file directly or 
+# for portability put this in a terraform variable file.
+
+variable "aws_region" {
+  description = "AWS region"
+  type        = string
+  default     = "us-east-1"
+
+}
+
+# This provides the CIDR blocks for VPC and subnets.
+
+variable "vpc_cidr_block" {
+  description = "CIDR block for VPC"
+}
+
+# This variable sets the subnet within the CIDR block. 
+variable "subnet_cidr_block" {
+
+}
+
+# Set AWS availaibility zone for the VPC. 
+variable "avail_zone" {
+  description = "AWS region availability zone"
+  type        = string
+  default     = "us-east-1a"
+
+}
+
+# Identify the virtual environment. For example Development,
+# Test, etc. 
+variable "env_prefix" {
+  description = "Use to identify for deployment environment."
+}
+
+variable "my_ip" {
+  description = "Identify source IP address allowed to remotely access the virtual machine."
+}
+
+variable "instance_type" {
+  description = "Identify instance type to be used for virtual machine."
+}
+
+
 
 #----------------------------------------------------------------#
 # 
@@ -9,9 +59,9 @@ provider "aws" {
 
 # Create a Virtual Private Cloud. 
 resource "aws_vpc" "myapp-vpc" {
-  cidr_block = "10.0.0.0/16"
+  cidr_block = var.vpc_cidr_block
   tags = {
-    Name : "demo-vpc"
+    Name : "${var.env_prefix}-vpc"
   }
 }
 
@@ -19,10 +69,10 @@ resource "aws_vpc" "myapp-vpc" {
 
 resource "aws_subnet" "myapp-subnet-1" {
   vpc_id            = aws_vpc.myapp-vpc.id
-  cidr_block        = "10.0.34.0/24"
-  availability_zone = "us-east-1f"
+  cidr_block        = var.subnet_cidr_block
+  availability_zone = var.avail_zone
   tags = {
-    Name : "demo-subnet-1"
+    Name : "${var.env_prefix}-subnet-1"
   }
 }
 
@@ -31,7 +81,7 @@ resource "aws_subnet" "myapp-subnet-1" {
 resource "aws_internet_gateway" "myapp-igw" {
   vpc_id = aws_vpc.myapp-vpc.id
   tags = {
-    Name : "demo-igw"
+    Name : "${var.env_prefix}-igw"
   }
 }
 
@@ -45,7 +95,7 @@ resource "aws_default_route_table" "main-rtb" {
     gateway_id = aws_internet_gateway.myapp-igw.id
   }
   tags = {
-    Name : "demo-main-rtb"
+    Name : "${var.env_prefix}-main-rtb"
   }
 }
 
@@ -60,14 +110,14 @@ resource "aws_default_security_group" "default-sg" {
     from_port   = 22
     to_port     = 22
     protocol    = "TCP"
-    cidr_blocks = "0.0.0.0/0"
+    cidr_blocks = [var.my_ip]
   }
 
   ingress {
     from_port   = 8080
     to_port     = 8080
     protocol    = "TCP"
-    cidr_blocks = ["0.0.0.0/0"] // This should be set to your local workstation IP address!!
+    cidr_blocks = ["0.0.0.0/0"]
   }
 
 
@@ -79,7 +129,7 @@ resource "aws_default_security_group" "default-sg" {
     prefix_list_ids = []
   }
   tags = {
-    Name : "demo-default-sg"
+    Name : "${var.env_prefix}-default-sg"
   }
 }
 
@@ -123,11 +173,11 @@ output "ec2-public_ip" {
 
 resource "aws_instance" "myapp-server" {
   ami           = data.aws_ami.latest-amazon-linux-image.id
-  instance_type = "t2.medium"
+  instance_type = var.instance_type
 
   subnet_id              = aws_subnet.myapp-subnet-1.id
   vpc_security_group_ids = [aws_default_security_group.default-sg.id]
-  availability_zone      = "us-east-1f"
+  availability_zone      = var.avail_zone
 
   key_name = "server-key-pair"
 
@@ -151,7 +201,7 @@ resource "aws_instance" "myapp-server" {
 
 
   tags = {
-    Name : "demo-server"
+    Name : "${var.env_prefix}-server"
   }
 }
 
