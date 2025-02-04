@@ -146,4 +146,10 @@ Note: If you "do not" have a service account for the Jenkins container, then ref
 - Add a Jenkinsfile to the repo you selected to manage using Jenkins.
 
 (7) Return to the Jenkins dashboard and select the pipeline you want to run.
-- Select "Build Now" on teh left side.
+- Select "Build Now" on the left side menu.
+
+- If everything looks correct, then you have the option to either select Apply or Abort the deployment.
+
+(8) Select Apply and then go to AWS and verify your deployment actually worked.
+
+(9) In this example Docker and Nginx is installed and we access the webpage via the reported public IP address shown in the terraform console output.
