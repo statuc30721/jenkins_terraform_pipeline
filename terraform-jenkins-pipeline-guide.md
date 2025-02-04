@@ -145,4 +145,7 @@ Note: If you "do not" have a service account for the Jenkins container, then ref
 
 - Add a Jenkinsfile to the repo you selected to manage using Jenkins.
 
+-- Set the credntialsId to whatever you named it in AWS IAM.
+-- Set under "git branch" the URL to the GitHub repository you have the pipeline set to.
+
 
