@@ -41,7 +41,7 @@ pipeline {
         stage('Plan Terraform') {
                 when { anyOf
                 {
-                    	environment name: 'ACTION', value: 'plan';
+                    	// environment name: 'ACTION', value: 'plan';
 						environment name: 'ACTION', value: 'apply'
 
                 }
