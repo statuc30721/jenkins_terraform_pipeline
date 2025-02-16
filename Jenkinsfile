@@ -45,8 +45,8 @@ pipeline {
                     credentialsId: 'AWS_SECRET_ACCESS_KEY' 
                 ]]) {
                     sh '''
-                    echo "AWS_ACCESS_KEY_ID: $AWS_ACCESS_KEY_ID"
-                    aws sts get-caller-identity
+                    export AWS_ACCESS_KEY_ID=$AWS_ACCESS_KEY_ID
+                    export AWS_SECRET_ACCESS_KEY=$AWS_SECRET_ACCESS_KEY
                     '''
                 } 
 
@@ -62,8 +62,8 @@ pipeline {
                     credentialsId: 'AWS_SECRET_ACCESS_KEY' 
                 ]]) {
                     sh '''
-                    echo "AWS_ACCESS_KEY_ID: $AWS_ACCESS_KEY_ID"
-                    aws sts get-caller-identity
+                    export AWS_ACCESS_KEY_ID=$AWS_ACCESS_KEY_ID
+                    export AWS_SECRET_ACCESS_KEY=$AWS_SECRET_ACCESS_KEY
                     '''
                 } 
                 script {
