@@ -124,12 +124,4 @@ pipeline {
 
 
     }
-    post {
-        success {
-            echo 'Terraform deployment completed successfully!'
-            }
-        failure {
-             echo 'Terraform deployment failed!'
-            }
-    }
 }
