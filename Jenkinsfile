@@ -123,14 +123,13 @@ pipeline {
         }
 
 
-
-        post {
-            success {
-                echo 'Terraform deployment completed successfully!'
+    }
+    post {
+        success {
+            echo 'Terraform deployment completed successfully!'
             }
-            failure {
-                echo 'Terraform deployment failed!'
+        failure {
+             echo 'Terraform deployment failed!'
             }
-        }
     }
 }
