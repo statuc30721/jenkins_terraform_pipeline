@@ -54,10 +54,18 @@ pipeline {
                 sh ' terraform show -no-color tfplan > tfplan.txt'
             }
         }
-        
+
         stage('Apply / Destroy Terraform') {
             steps {
-
+                withCredentials([[
+                    $class: 'AmazonWebServicesCredentialsBinding',
+                    credentialsId: 'AWS_SECRET_ACCESS_KEY' 
+                ]]) {
+                    sh '''
+                    echo "AWS_ACCESS_KEY_ID: $AWS_ACCESS_KEY_ID"
+                    aws sts get-caller-identity
+                    '''
+                } 
                 script {
                     if (parameters.action == 'apply'){
                         if (!parameters.autoApprove) {
