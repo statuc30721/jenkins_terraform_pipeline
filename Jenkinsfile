@@ -97,7 +97,7 @@ pipeline {
 
                 script {
 					def IS_APPROVED = input(
-						message: "Destroy Deployed Project ?!"
+						message: "Destroy Deployed Project ?!",
 						ok: "Yes",
 						parameters: [
 							string(name: 'IS_APPROVED', defaultValue: 'No', description: 'Think again!!!')
