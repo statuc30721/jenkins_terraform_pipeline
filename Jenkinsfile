@@ -4,6 +4,14 @@ pipeline {
         AWS_REGION = 'us-east-1'
         ACTION = "${params.ACTION}"
     }
+
+    parameters {
+            choice (name: 'ACTION',
+				            choices: [ 'plan', 'apply', 'destroy'],
+				            description: 'Run terraform plan / apply / destroy')
+    }
+
+
     stages {
         stage('Set AWS Credentials') {
             steps {
