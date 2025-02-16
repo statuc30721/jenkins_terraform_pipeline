@@ -83,24 +83,22 @@ pipeline {
                 }
             }
         }
-    }
-
         stage('Destroy Terraform') {
-                    when { anyOf
-                    {
-                            environment name: 'ACTION', value: 'destroy'
+            when { anyOf
+               {
+                   environment name: 'ACTION', value: 'destroy'
 
-                    }
                 }
+            }
 
 
-                steps {
+            steps {
 
-                    script {
-                        def IS_APPROVED = input(
-                            message: "Destroy Deployed Project ?!",
-                            ok: "Yes",
-                            parameters: [
+                script {
+                    def IS_APPROVED = input(
+                        message: "Destroy Deployed Project ?!",
+                        ok: "Yes",
+                        parameters: [
                                 string(name: 'IS_APPROVED', defaultValue: 'No', description: 'Think again!!!')
                             ]
                         )
@@ -122,6 +120,9 @@ pipeline {
                     }
                 }
             }
+        }
+
+
 
         post {
             success {
