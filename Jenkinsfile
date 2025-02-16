@@ -42,7 +42,7 @@ pipeline {
                 when { anyOf
                 {
                     	environment name: 'ACTION', value: 'plan';
-						// environment name: 'ACTION', value: 'apply'
+						environment name: 'ACTION', value: 'apply'
 
                 }
             }
