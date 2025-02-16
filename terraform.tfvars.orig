@@ -1,0 +1,16 @@
+# Default terraform variable source file. 
+# I named them demo for testing the configuration. 
+
+env_prefix = "demo"
+
+vpc_cidr_block = "10.0.0.0/16"
+
+subnet_cidr_block = "10.0.34.0/24"
+
+// You should input your actual IP address of your computer in this field.
+
+my_ip = "0.0.0.0/0"
+
+instance_type = "t2.medium"
+
+avail_zone = "us-east-1f"
