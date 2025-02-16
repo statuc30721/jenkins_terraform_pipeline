@@ -84,6 +84,44 @@ pipeline {
             }
         }
     }
+        stage('Destroy Terraform') {
+                when { anyOf
+                {
+						environment name: 'ACTION', value: 'destroy'
+
+                }
+            }
+
+
+            steps {
+
+                script {
+					def IS_APPROVED = input(
+						message: "Destroy Deployed Project ?!"
+						ok: "Yes",
+						parameters: [
+							string(name: 'IS_APPROVED', defaultValue: 'No', description: 'Think again!!!')
+						]
+					)
+					if (IS_APPROVED != 'Yes') {
+						currentBuild.result = "ABORTED"
+						error "User destruction cancelled"
+					}
+
+
+                withCredentials([[
+                    $class: 'AmazonWebServicesCredentialsBinding',
+                    credentialsId: 'AWS_SECRET_ACCESS_KEY'
+                ]]) {
+                    sh '''
+                    export AWS_ACCESS_KEY_ID=$AWS_ACCESS_KEY_ID
+                    export AWS_SECRET_ACCESS_KEY=$AWS_SECRET_ACCESS_KEY
+                    terraform destroy -auto-approve
+                    '''
+                }
+            }
+        }
+
     post {
         success {
             echo 'Terraform deployment completed successfully!'
