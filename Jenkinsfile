@@ -53,6 +53,15 @@ pipeline {
             }
         }
         stage('Apply Terraform') {
+            when { any
+                {
+                    	environment name: 'ACTION', value: 'plan';
+						environment name: 'ACTION', value: 'apply'
+
+                }
+            }
+
+
             steps {
                 input message: "Approve Terraform Apply?", ok: "Deploy"
                 withCredentials([[
