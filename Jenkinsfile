@@ -39,6 +39,14 @@ pipeline {
             }
         }
         stage('Plan Terraform') {
+                when { anyOf
+                {
+                    	environment name: 'ACTION', value: 'plan';
+						environment name: 'ACTION', value: 'apply'
+
+                }
+            }
+            
             steps {
                 withCredentials([[
                     $class: 'AmazonWebServicesCredentialsBinding',
@@ -53,13 +61,7 @@ pipeline {
             }
         }
         stage('Apply Terraform') {
-            when { anyOf
-                {
-                    	environment name: 'ACTION', value: 'plan';
-						environment name: 'ACTION', value: 'apply'
 
-                }
-            }
 
 
             steps {
